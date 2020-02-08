@@ -18,7 +18,7 @@ build :
 	@python3 setup.py bdist_wheel
 
 upload : build
-	python3 setup.py upload
+	python3 setup.py sdist upload
 
 install: build
 	@if [ -d "./${MODULENAME}/requirements.txt" ]; then python3 -m pip install -r requirements.txt ; fi
