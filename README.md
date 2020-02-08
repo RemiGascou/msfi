@@ -7,7 +7,7 @@ A Python 3.* plugin to interact with the Metasploit Framework Console.
 
 ## Installation
 
-In order to install msfi, you can either install a stable version from PyPi (https://pypi.org/project/msfi/) :
+In order to install msfi, you can either install a stable version from PyPi [https://pypi.org/project/msfi/](https://pypi.org/project/msfi/) :
 
 ```bash
 python3 -m pip install msfi
