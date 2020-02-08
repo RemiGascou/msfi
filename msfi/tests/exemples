@@ -1,0 +1,4 @@
+msf5 >
+msf5 test(ThisIsAString) >
+msf5 exploit(ThisIsAString) >
+msf5 exploit(windows/iis/ms01_033_idq) > 
