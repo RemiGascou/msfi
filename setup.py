@@ -13,8 +13,8 @@ setuptools.setup(
     packages     = setuptools.find_packages(),
     classifiers  = [
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GPL2",
-        "Operating System :: OS Independent",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+        "Topic :: Security",
     ],
     python_requires = '>=3.6',
     zip_safe     = False

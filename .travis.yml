@@ -2,14 +2,4 @@ language: python
 python:
     - '3.7'
 script:
-  - make
-#deploy:
-#  - provider: pypi
-#    distributions: sdist
-#    user: Remigascou
-#    on:
-#      branch: master
-#      tags: true
-#      condition: $TRAVIS_PYTHON_VERSION = "3.4"
-#    password:
-#      secure: ""
+  - make clean build

@@ -15,7 +15,6 @@ python3 -m pip install msfi
 
 See [examples](./examples/)
 
-
 ## Developpement
 
 See [docs/PROTOTYPES.md](./docs/PROTOTYPES.md)
