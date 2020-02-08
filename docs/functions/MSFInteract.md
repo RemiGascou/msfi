@@ -1,4 +1,4 @@
-# Prototypes
+# MSFInteract Functions
 
 ## Class MSFInteract
 

@@ -12,19 +12,19 @@ clean :
 
 build :
 	@echo "[BUILD] python3 setup.py sdist bdist_wheel"
-	@python3 setup.py sdist bdist_wheel
+	@python3 ./${MODULENAME}/setup.py sdist bdist_wheel
 
 upload : build
 	@if [ $(shell python3 -m pip list | grep twine | wc -l) -eq '0' ]; then \
-		echo "[UPLOAD] Installing required python3 package twine ..."; 	\
-		python3 -m pip install twine; 							\
+		echo "[UPLOAD] Installing required python3 package twine ..."; 		\
+		python3 -m pip install twine; 										\
 	fi
 	@python3 setup.py sdist
-	@python3 -m twine upload "dist/*"
+	@python3 -m twine upload "./dist/*"
 
 install: build
-	@if [ -d "./${MODULENAME}/requirements.txt" ]; then python3 -m pip install -r requirements.txt ; fi
-	@python3 -m pip install .
+	@if [ -d "./${MODULENAME}/requirements.txt" ]; then python3 -m pip install -r ./${MODULENAME}/requirements.txt ; fi
+	@python3 -m pip install ../msfi/${MODULENAME}
 
 uninstall:
 	@python3 -m pip uninstall ${MODULENAME}
@@ -32,6 +32,6 @@ uninstall:
 release :
 	@if [ ! -d "./releases/" ]; then mkdir -p "./releases/"; fi
 	@if [ -f ./dist/${MODULENAME}*.whl ]; then 				\
+		echo "[RELEASE] Copying release : $(shell basename ./dist/${MODULENAME}*.whl)"; 	\
 		cp ./dist/${MODULENAME}*.whl "./releases/"; 		\
-		@echo "[RELEASE] Copying release : $(shell basename ./dist/${MODULENAME}*.whl)"; 	\
 	fi
