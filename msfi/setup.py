@@ -4,7 +4,7 @@ import setuptools
 
 setuptools.setup(
     name         = 'msfi',
-    version      = '1.0',
+    version      = '1.1',
     description  = 'This module allow scripting to control the Metasploit Console',
     url          = 'http://github.com/Remigascou/msfi',
     author       = 'Remi GASCOU',
@@ -17,5 +17,5 @@ setuptools.setup(
         "Topic :: Security",
     ],
     python_requires = '>=3.6',
-    zip_safe     = False
+    zip_safe        = False
 )
