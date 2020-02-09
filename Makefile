@@ -29,9 +29,20 @@ install: build
 uninstall:
 	@python3 -m pip uninstall ${MODULENAME}
 
-release :
+release : build
 	@if [ ! -d "./releases/" ]; then mkdir -p "./releases/"; fi
-	@if [ -f ./dist/${MODULENAME}*.whl ]; then 				\
-		echo "[RELEASE] Copying release : $(shell basename ./dist/${MODULENAME}*.whl)"; 	\
-		cp ./dist/${MODULENAME}*.whl "./releases/"; 		\
+	@if [ -f ./dist/${MODULENAME}*.whl ]; then \
+		echo "[RELEASE] Creating release ${MODULENAME} v$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}'):";	\
+		if [ ! -d "./releases/$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}')" ]; then \
+			mkdir -p "./releases/$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}')"; 	\
+		fi; \
+		echo "[RELEASE] ./releases/$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}')/";	\
+		if [ -f ./dist/${MODULENAME}*.whl ]; then \
+			echo "[RELEASE]   ├──> $(shell basename ./dist/${MODULENAME}*.whl)";	\
+			cp ./dist/${MODULENAME}*.whl "./releases/$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}')/"; \
+		fi; \
+		if [ -f ./dist/${MODULENAME}*.tar.gz ]; then \
+			echo "[RELEASE]   └──> $(shell basename ./dist/${MODULENAME}*.tar.gz)";	\
+			cp ./dist/${MODULENAME}*.tar.gz "./releases/$(shell echo "$(shell basename ./dist/${MODULENAME}*.whl)" | awk '{split($$0,a,"-"); print a[2];}')/"; \
+		fi; \
 	fi

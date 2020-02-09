@@ -42,6 +42,20 @@ class MSFInteract(object):
         else :
             return None
 
+    def use(self, exploit):
+        if self.conn['status'] == True and len(exploit.strip()) != 0:
+            response = self.execute("use "+exploit)
+            return response
+        else :
+            return None
+
+    def exploit(self):
+        if self.conn['status'] == True:
+            response = self.execute("exploit")
+            return response
+        else :
+            return None
+
     def search(self, text):
         """Documentation for search"""
         def parse_search(text):
@@ -67,12 +81,22 @@ class MSFInteract(object):
         else :
             return None
 
+    def set_options(self, options:dict):
+        for key in options.keys():
+            cmd = ' '.join(["set", str(key), str(options[key])])
+            response = self.execute(cmd)
+            if bytes(response, "ISO-8859-1") != bytes("\x1b[0m"+str(key)+" => "+str(options[key]), "ISO-8859-1"):
+                self._debug("Unexpected response in set_options :")
+                self._debug(" ├──> Expeced : "+str(bytes("\x1b[0m"+str(key)+" => "+str(options[key]), "ISO-8859-1")))
+                self._debug(" └──> Got     : "+str(bytes(response, "ISO-8859-1")))
+
     def close(self):
         if self.conn['status'] == True:
             self._debug("Closing MSF Console ...")
             self.conn['child'].send('exit\n')
             self.conn['child'].expect(pexpect.exceptions.EOF)
             self._debug("MSF Console closed.")
+            self.conn['status'] = True
 
     def _debug(self, message):
         if self.debugging_infos['status'] == True :
@@ -90,7 +114,7 @@ class MSFInteract(object):
         result = ""
         self.conn['child'].expect([
                 r'[\x1b]\[4mmsf5[\x1b]\[0m [\x1b]\[0m>',
-                r'[\x1b]\[4mmsf5[\x1b]\[0m [a-zA-Z0-9]*\([\x1b]\[91m[a-zA-Z0-9_\/\-]*[\x1b]\[0m\) >'
+                r'[\x1b]\[4mmsf5[\x1b]\[0m [a-zA-Z0-9]*\([\x1b]\[1m[\x1b]\[31m[a-zA-Z0-9_\/\-]*[\x1b]\[0m\) [\x1b]\[0m\>'
             ],
             timeout=-1
         )
@@ -98,6 +122,7 @@ class MSFInteract(object):
             result += '\n'.join(self.conn['child'].before.decode("ISO-8859-1").split("\n")[1:])
         else :
             result += self.conn['child'].before.decode("ISO-8859-1")
+        result = '\n'.join([l.replace('\r','') for l in result.split('\r\n') if len(l.strip()) != 0 and l.strip() != '\x1b[0m'])
         return result
 
     def _sanitize(self, text):
